@@ -5,7 +5,7 @@
 " fmt.vim: Vim command to format Go files with gofmt (and gofmt compatible
 " toorls, such as goimports).
 
-function! fmtjson#GetLines()
+function! jfmt#GetLines()
   let buf = getline(1, '$')
   if &encoding != 'utf-8'
     let buf = map(buf, 'iconv(v:val, &encoding, "utf-8")')
@@ -13,7 +13,7 @@ function! fmtjson#GetLines()
   return buf
 endfunction
 
-function! fmtjson#Sh(str) abort
+function! jfmt#Sh(str) abort
   " Preserve original shell and shellredir values
   let l:shell = &shell
   let l:shellredir = &shellredir
@@ -29,27 +29,27 @@ function! fmtjson#Sh(str) abort
   endtry
 endfunction
 
-function! fmtjson#Format() abort
+function! jfmt#Format() abort
   " Save cursor position and many other things.
   let l:curw = winsaveview()
 
   " Write current unsaved buffer to a temp file
   let l:tmpsrc = tempname()
   let l:tmptgt = tempname()
-  call writefile(fmtjson#GetLines(), l:tmpsrc)
+  call writefile(jfmt#GetLines(), l:tmpsrc)
 
   let cmd = ["jq ."]
   call add(cmd, l:tmpsrc)
   call add(cmd, "1>")
   call add(cmd, l:tmptgt)
 
-  let out = fmtjson#Sh(join(cmd, " "))
+  let out = jfmt#Sh(join(cmd, " "))
 
   if v:shell_error == 0
-    call fmtjson#update_file(l:tmptgt, expand('%'))
+    call jfmt#update_file(l:tmptgt, expand('%'))
     let errors = []
   else
-    let errors = fmtjson#parse_error(expand('%'), out)
+    let errors = jfmt#parse_error(expand('%'), out)
   endif
   call s:show_errors(errors)
 
@@ -61,7 +61,7 @@ function! fmtjson#Format() abort
 endfunction
 
 " update_file updates the target file with the given formatted source
-function! fmtjson#update_file(source, target)
+function! jfmt#update_file(source, target)
   " remove undo point caused via BufWritePre
   try | silent undojoin | catch | endtry
 
@@ -90,7 +90,7 @@ function! fmtjson#update_file(source, target)
   "call go#list#Window(l:listtype)
 endfunction
 
-function! fmtjson#parse_error(filename, content) abort
+function! jfmt#parse_error(filename, content) abort
   let errors = []
   let line = matchstr(a:content, '.*line \zs.*\ze,')
   let col = matchstr(a:content, '.*column \zs.*\ze$')
