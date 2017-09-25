@@ -1,9 +1,8 @@
-" Copyright 2011 The Go Authors. All rights reserved.
-" Use of this source code is governed by a BSD-style
-" license that can be found in the LICENSE file.
-"
-" fmt.vim: Vim command to format Go files with gofmt (and gofmt compatible
-" toorls, such as goimports).
+" jfmt.vim: Vim command to format json files with jq
+
+if !exists('g:jfmt_jq_options')
+  let g:jfmt_jq_options = ''
+endif
 
 function! jfmt#GetLines()
   let buf = getline(1, '$')
@@ -38,7 +37,9 @@ function! jfmt#Format() abort
   let l:tmptgt = tempname()
   call writefile(jfmt#GetLines(), l:tmpsrc)
 
-  let cmd = ["jq ."]
+  let cmd = ["jq"]
+  call extend(cmd, split(g:jfmt_jq_options, " "))
+  call add(cmd, ".")
   call add(cmd, l:tmpsrc)
   call add(cmd, "1>")
   call add(cmd, l:tmptgt)
@@ -53,11 +54,10 @@ function! jfmt#Format() abort
   endif
   call s:show_errors(errors)
 
-  " We didn't use the temp file, so clean up
-  "call delete(l:tmpsrc)
+  call delete(l:tmpsrc)
 
-  " Restore our cursor/windows positions.
-  " call winrestview(l:curw)
+  " Restore cursor/windows positions.
+  call winrestview(l:curw)
 endfunction
 
 " update_file updates the target file with the given formatted source
@@ -83,11 +83,6 @@ function! jfmt#update_file(source, target)
 
   let &fileformat = old_fileformat
   let &syntax = &syntax
-
-  " clean up previous location list
-  "let l:listtype = "locationlist"
-  "call go#list#Clean(l:listtype)
-  "call go#list#Window(l:listtype)
 endfunction
 
 function! jfmt#parse_error(filename, content) abort
