@@ -4,6 +4,11 @@ if !exists('g:jfmt_jq_options')
   let g:jfmt_jq_options = ''
 endif
 
+if !exists('g:jfmt_jq_filter')
+  let g:jfmt_jq_filter = '.'
+endif
+
+
 function! jfmt#GetLines()
   let buf = getline(1, '$')
   if &encoding != 'utf-8'
@@ -39,7 +44,7 @@ function! jfmt#Format() abort
 
   let cmd = ["jq"]
   call extend(cmd, split(g:jfmt_jq_options, " "))
-  call add(cmd, ".")
+  call add(cmd, g:jfmt_jq_filter)
   call add(cmd, l:tmpsrc)
   call add(cmd, "1>")
   call add(cmd, l:tmptgt)
