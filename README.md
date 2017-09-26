@@ -7,15 +7,17 @@
 Ensure you have [jq](https://stedolan.github.io/jq/) installed and available in your local `$PATH`
 
 Then, add to your `.vimrc` using your plugin manager of choice; e.g. vundle:
-```
+```vim
 Plugin 'bcicen/vim-jfmt'
 ```
 
 ## Options
 
-Additional options may be provided to jq by setting `g:jfmt_jq_options`
+Additional options may be provided to jq by setting `g:jfmt_jq_options`:
 
-Use tabs instead of spaces for indentation:
-```
+```vim
+" use tabs instead of spaces for indentation
 let g:jfmt_jq_options = '--tab'
 ```
+
+Likewise, the default filter(`.`) can be changed by setting `g:jfmt_jq_filter`
