@@ -1,6 +1,6 @@
 # vim-jfmt
 
-`jfmt` is a simple plugin for vim to pretty-print and indent JSON files on save
+`jfmt` is a simple plugin for vim to automatically format/pretty-print and indent JSON files.
 
 ## Installing
 
