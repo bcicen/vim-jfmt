@@ -2,6 +2,8 @@ if !exists('g:jfmt_on_save')
   let g:jfmt_on_save = 1
 endif
 
+command! Jfmt call jfmt#Format()
+
 augroup jfmt
   if g:jfmt_on_save == 1
     autocmd!
