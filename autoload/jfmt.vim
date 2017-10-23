@@ -1,4 +1,4 @@
-" jfmt.vim: Vim command to format json files with jq
+" jfmt.vim: format json files with jq
 
 if !exists('g:jfmt_jq_options')
   let g:jfmt_jq_options = ''
@@ -34,7 +34,7 @@ function! jfmt#Sh(str) abort
 endfunction
 
 function! jfmt#Format() abort
-  " Save cursor position and many other things.
+  " Save cursor position
   let l:curw = winsaveview()
 
   " Write current unsaved buffer to a temp file
@@ -61,7 +61,7 @@ function! jfmt#Format() abort
 
   call delete(l:tmpsrc)
 
-  " Restore cursor/windows positions.
+  " Restore cursor/windows positions
   call winrestview(l:curw)
 endfunction
 
