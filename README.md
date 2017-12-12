@@ -15,13 +15,12 @@ Plugin 'bcicen/vim-jfmt'
 
 ## Usage
 
-By default, `jfmt` will validate all JSON files on save, opening a location list with any parse errors encountered. To enable format/pretty-print on save as well, simply add the below to your `.vimrc`:
+By default, `jfmt` will only validate JSON files on save, opening a location list with any parse errors encountered.
 
+To manually format/pretty-print the open file, use the `:Jfmt` command. To automatically run this on save as well, simply add the below to your `.vimrc`:
 ```vim
 let g:jfmt_autofmt  = 1
 ```
-
-and use the `:Jfmt` command to manually format when needed
 
 ## Options
 

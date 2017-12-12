@@ -33,7 +33,7 @@ function! jfmt#Sh(str) abort
   endtry
 endfunction
 
-function! jfmt#Format() abort
+function! jfmt#Run(autofmt) abort
   " Save cursor position
   let l:curw = winsaveview()
 
@@ -52,8 +52,10 @@ function! jfmt#Format() abort
   let out = jfmt#Sh(join(cmd, " "))
 
   if v:shell_error == 0
-    call jfmt#update_file(l:tmptgt, expand('%'))
     let errors = []
+    if a:autofmt == 1
+      call jfmt#update_file(l:tmptgt, expand('%'))
+    endif
   else
     let errors = jfmt#parse_error(expand('%'), out)
   endif
